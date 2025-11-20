@@ -48,20 +48,29 @@ const CLASSES = {
 	}
 }
 
+
+func _ready() -> void:
+	$Label.text = getRandomCharacter()
+
+
 func getRandomDictItem(dict: Dictionary, returnKey = false):
-	var keys = dict.keys() # Get all keys as an array
-	var random_index = randi() % dict.size() # Generate a random index
+	var keys = dict.keys() 
+	var random_index = randi() % dict.size() 
 	
 	if returnKey:
 		return [dict[keys[random_index]], keys[random_index]]
 	
-	return dict[keys[random_index]] # Return the value associated with the random key
+	return dict[keys[random_index]] 
 
 
-func _on_button_button_down() -> void:
+func getRandomCharacter():
 	var gender = ['male', 'female'].pick_random()
 	var randomClass: String = getRandomDictItem(CLASSES, true)[1]
 	var race: String = CLASSES[randomClass]['races'].pick_random()
 	var spec: String = CLASSES[randomClass]['specs'].pick_random()
 	
-	$Label.text = gender + ' ' + race + ' ' + spec + ' ' + randomClass
+	return gender + ' ' + race + ' ' + spec + ' ' + randomClass
+
+
+func _on_button_button_down() -> void:
+	$Label.text = getRandomCharacter()
