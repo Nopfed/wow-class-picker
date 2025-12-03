@@ -1,6 +1,7 @@
 extends Control
 
 # TODO -> Add the ability to roll individual parts of the caracter separately
+# TODO -> Add professions
 
 const CLASSES = {
 	'warrior': {
@@ -123,6 +124,22 @@ const CLASSES = {
 		]
 	}
 }
+const PROFESSIONS = {
+	'engineering': ['mining'],
+	'blacksmithing': ['mining'],
+	'jewelcrafting': ['mining'],
+	'tailoring': [
+		'enchanting', 'your choice', 'mining', 'herbalism', 'skinning'
+	],
+	'enchanting': [
+		'blacksmithing', 'your choice', 'skinning', 'herbalism', 'mining'
+	],
+	'alchemy': ['herbalism'],
+	'leatherworking': ['skinning'],
+	'mining': ['skinning', 'herbalism', 'your choice'],
+	'skinning': ['herbalism', 'your choice'],
+	'your choice': ['your choice']
+}
 
 
 func _ready() -> void:
@@ -146,8 +163,18 @@ func getRandomCharacter():
 	var race: String = CLASSES[randomClass]['races'].pick_random()
 	var spec: String = CLASSES[randomClass]['specs'].pick_random()
 	var weapon: String = CLASSES[randomClass]['weapons'].pick_random()
+	var profession1: String = getRandomDictItem(PROFESSIONS, true)[1]
+	var profession2: String = PROFESSIONS[profession1].pick_random()
+	var professions: String = \
+		 profession1 + \
+		' and ' + \
+		profession2
 	
-	return [gender + ' ' + race + ' ' + spec + ' ' + randomClass, weapon]
+	return [
+		gender + ' ' + race + ' ' + spec + ' ' + randomClass,
+		weapon,
+		professions
+		]
 
 
 func hitButton():
@@ -155,6 +182,7 @@ func hitButton():
 	
 	$Character.text = randomCharacter[0]
 	$Weapon.text = randomCharacter[1]
+	$Professions.text = randomCharacter[2]
 
 
 func _on_button_button_down() -> void:
